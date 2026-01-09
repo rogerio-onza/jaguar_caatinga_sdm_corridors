@@ -29,7 +29,7 @@ caatinga <- terra::project(caatinga, "EPSG:4326")
 
 # Process: Jaguar Salve
 salve_clean <- salve_raw %>%
-  dplyr::filter(Ano >= 2010, Precisa_da_coordenada == "Exata")
+  dplyr::filter(Ano >= 2010, Precisao_da_coordenada == "Exata")
 
 # Fix Datum (SIRGAS2000 -> WGS84)
 salve_sirgas <- salve_clean %>% dplyr::filter(Datum == "SIRGAS2000")
@@ -120,7 +120,7 @@ print(plot_map)
 # Format strictly as requested
 data_export <- data_unique %>%
   dplyr::mutate(countryCode = "BR") %>% # Revert to BR if you prefer ISO2 for final csv, or keep BRA
-  dplyr::select(Longitude, Latitude, countryCode, Species)
+  dplyr::select(Longitude, Latitude)
 
 readr::write_csv(data_export, "jaguar_data.csv")
 cat("File saved: jaguar_data.csv\n")
