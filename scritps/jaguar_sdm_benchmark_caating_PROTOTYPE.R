@@ -1,7 +1,7 @@
 # Script: Full Benchmark - 50 Reps + Null Models + Tuning
 # Region: Caatinga | Species: Panthera onca
 # Author: Oliveira, 2025
-# Version: 3.0 - High Performance Computing (HPC) setup
+# Version: 3.1 - Minor text fixes
 
 # 1. Load packages
 library(terra)
