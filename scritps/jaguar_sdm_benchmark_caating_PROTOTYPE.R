@@ -3,7 +3,7 @@
 # Author: Oliveira, 2025
 # Version: 3.0 - High Performance Computing (HPC) setup
 
-# 1. LOAD PACKAGES --------------------------------------------------------
+# 1. Load packages
 library(terra)
 library(dplyr)
 library(readr)
@@ -12,7 +12,7 @@ library(flexsdm)
 library(GeoThinneR)
 library(future)
 
-# 2. SETTINGS -------------------------------------------------------------
+# 2. Settings
 # Computational Setup
 # Allocating 2 cores for parallel tuning inside flexsdm functions
 future::plan("multisession", workers = 8)
@@ -20,7 +20,7 @@ future::plan("multisession", workers = 8)
 # Parameters
 species_name <- "Panthera onca"
 input_csv    <- "jaguar_data.csv"
-raster_dir   <- "rasters/caatinga"
+raster_dir   <- "rasters/variables"
 output_dir   <- "results/full_benchmark_v3"
 
 hr_value     <- 9.0
