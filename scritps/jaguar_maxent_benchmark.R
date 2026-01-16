@@ -12,7 +12,7 @@ library(GeoThinneR)
 presence_file <- "data/presence/jaguar_data.csv"
 background_file <- "data/background/jaguar_data_bg.csv"
 rasters_path <- "rasters/variables"
-output_dir <- "results/maxent/"
+output_dir <- "results/maxent_benk/"
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
 seed_base <- 18
