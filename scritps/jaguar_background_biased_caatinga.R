@@ -1,7 +1,7 @@
 # Generate background points
 # Author: Oliveira, 2025
 # Date: 01/13
-# Version: 1.1
+# Version: 1.2
 
 # 1. Load packages
 library(terra)
