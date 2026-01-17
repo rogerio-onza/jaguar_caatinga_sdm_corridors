@@ -17,11 +17,11 @@ dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
 seed_base <- 18
 base_thin_distance <- 9
-#thin_multipliers <- c(0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2)
-thin_multipliers <- c(0,1) #test only
+thin_multipliers <- c(0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2)
+#thin_multipliers <- c(0,1) #test only
 n_cores_geothinner <- 4
 n_cores_flexsdm <- 8
-n_replicates <- 2
+n_replicates <- 50
 
 part_method <- c(method = "rep_kfold", folds = 4, replicates = 5)
 
