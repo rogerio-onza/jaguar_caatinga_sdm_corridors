@@ -26,8 +26,8 @@ n_replicates <- 50
 part_method <- c(method = "rep_kfold", folds = 4, replicates = 5)
 
 maxent_grid <- expand.grid(
-  regmult = c(0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4),
-  classes = c("l", "lq", "lp", "lh","lqp", "lqh", "lqph" , "lqpht"),
+  regmult = c(0.5, 1, 1.5, 2, 3, 4),
+  classes = c("l", "lq", "lqh", "lqpht"),
   stringsAsFactors = FALSE
 )
 
