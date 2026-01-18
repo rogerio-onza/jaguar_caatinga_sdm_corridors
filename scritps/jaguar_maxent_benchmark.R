@@ -10,7 +10,7 @@ library(GeoThinneR)
 
 # Configuration
 presence_file <- "data/presence/jaguar_data.csv"
-background_file <- "data/background/jaguar_data_bg.csv"
+background_file <- "data/background/jaguar_bg_maxe.csv"
 rasters_path <- "rasters/variables"
 output_dir <- "results/maxent_benk/"
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
@@ -27,7 +27,7 @@ part_method <- c(method = "rep_kfold", folds = 4, replicates = 5)
 
 maxent_grid <- expand.grid(
   regmult = c(0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4),
-  classes = c("l", "lq", "lp", "lqp", "lqph", "lqpht"),
+  classes = c("l", "lq", "lp", "lh","lqp", "lqh", "lqph" , "lqpht"),
   stringsAsFactors = FALSE
 )
 
