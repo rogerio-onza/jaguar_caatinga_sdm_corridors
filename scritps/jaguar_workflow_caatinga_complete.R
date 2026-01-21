@@ -1,6 +1,7 @@
 # Unified SDM workflow: Tuning → Selection → Pause → Ensemble → MSDM
 # Author: Oliveira, 2025
 # Date: 2026-01-20
+# Version: 1.1
 
 library(tidyverse)
 library(terra)
@@ -669,11 +670,12 @@ write_csv(maxent_best$performance, paste0(output_dirs$ensemble, "maxent_selected
 # Phase 4: Create ensemble model
 ensemble_model <- fit_ensemble(
   models = list(net_best, gbm_best, raf_best, maxent_best),
-  ens_method = "meanw",
+  ens_method = "median",
   thr = threshold_type,
   thr_model = threshold_type,
   metric = selection_metric
 )
+
 
 # Save ensemble performance
 write_csv(ensemble_model$performance, paste0(output_dirs$ensemble, "ensemble_performance.csv"))
@@ -700,8 +702,10 @@ prediction <- sdm_predict(
   pred_type = "cloglog"
 )
 
-prediction_continuous <- prediction$meanw[[1]]
-prediction_binary <- prediction$meanw[[2]]
+prediction_continuous <- prediction$median[[1]]
+prediction_binary <- prediction$median[[2]]
+
+plot(prediction_continuous)
 
 names(prediction_continuous) <- "ensemble_continuous"
 names(prediction_binary) <- "ensemble_binary"
@@ -743,13 +747,15 @@ msdm_result <- msdm_posteriori(
   y = "y",
   pr_ab = "pr_ab",
   cont_suit = prediction_continuous,
-  method = "pres",
-  thr = threshold_type,
+  method = "obr",
+  thr = 0.547,
   buffer = NULL
 )
 
 prediction_continuous_msdm <- msdm_result[[1]]
 prediction_binary_msdm <- msdm_result[[2]]
+
+plot(prediction_continuous_msdm)
 
 names(prediction_continuous_msdm) <- "ensemble_continuous_msdm"
 names(prediction_binary_msdm) <- "ensemble_binary_msdm"
