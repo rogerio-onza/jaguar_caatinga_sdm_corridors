@@ -12,11 +12,11 @@ library(dplyr)
 library(readr)
 
 # Load Vectors
-caatinga_iucn_buffer <- terra::vect("shps/jaguar_iucn_range_buffer.shp")
-caatinga_ecoregion   <- terra::vect("shps/caatinga_ecoregion.shp")
+caatinga_iucn_buffer <- terra::vect("shps/iucn_range/jaguar_iucn_range_weigth_bg_buffer.shp")
+caatinga_ecoregion   <- terra::vect("shps/caatinga_ibge/caatinga_ibge_buffer_50km.shp")
 
 # Import environmental variable rasters
-variables_files <- list.files("rasters/variables/", pattern = "\\.tif$", full.names = TRUE)
+variables_files <- list.files("rasters/variables_buffer/", pattern = "\\.tif$", full.names = TRUE)
 variables <- terra::rast(variables_files)
 
 # Prepare Environmental Data (The "Training Area")
