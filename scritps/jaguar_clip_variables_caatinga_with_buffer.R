@@ -1,8 +1,8 @@
-# Clip selected environmental variables (post-VIF) for Caatinga with buffer
+# Clip and align environmental variables for Caatinga with buffer
 # Author: Oliveira, 2025
 # Date: 01/22
-# Version: 1.0 - Buffer version with VIF-selected variables only
-# Description: Clips only the variables that passed VIF analysis
+# Version: 3.0 - Integrated clip + alignment
+# Description: Clips VIF-selected variables with buffer and aligns all grids
 
 # 1. Load packages ----
 library(terra)
@@ -32,8 +32,13 @@ if (!dir.exists(out_dir)) {
 # 4. Load buffer shapefile ----
 caatinga_buffer <- terra::vect(buffer_shp_path)
 
-# 5. Process BIOCLIMATIC variables ----
+# ============================================================================
+# PART 1: PROCESS BIOCLIMATIC VARIABLES
+# ============================================================================
+
 message("Processing BIOCLIMATIC variables...")
+
+bio_files_created <- c()
 
 for (var in bioclim_vars) {
   # Find file matching the variable name (with or without leading zero)
@@ -65,17 +70,25 @@ for (var in bioclim_vars) {
   var_clipped <- terra::crop(raster_var, buffer_proj)
   var_clipped <- terra::mask(var_clipped, buffer_proj)
   
+  # Rename layer
+  names(var_clipped) <- var
+  
   # Save with simplified name
   out_file <- file.path(out_dir, paste0(var, ".tif"))
   terra::writeRaster(var_clipped, 
                      filename = out_file,
                      overwrite = TRUE)
+  bio_files_created <- c(bio_files_created, out_file)
   message(paste("✓", var))
 }
 
+# ============================================================================
+# PART 2: PROCESS LAND COVER VARIABLES (initial clip)
+# ============================================================================
 
-# 6. Process LAND COVER variables ----
 message("Processing LAND COVER variables...")
+
+class_temp_files <- c()
 
 for (var in landcover_vars) {
   # Find file matching the variable name (with underscore before number)
@@ -106,14 +119,52 @@ for (var in landcover_vars) {
   var_clipped <- terra::crop(raster_var, buffer_proj)
   var_clipped <- terra::mask(var_clipped, buffer_proj)
   
-  # Save with simplified name
-  out_file <- file.path(out_dir, paste0(var, ".tif"))
+  # Rename layer
+  names(var_clipped) <- var
+  
+  # Save temporarily
+  temp_file <- file.path(out_dir, paste0(var, "_temp.tif"))
   terra::writeRaster(var_clipped, 
-                     filename = out_file,
+                     filename = temp_file,
                      overwrite = TRUE)
-  message(paste("✓", var))
+  class_temp_files <- c(class_temp_files, temp_file)
+  message(paste("✓", var, "(temporary)"))
 }
 
-# 7. Summary ----
-message("\nProcessing complete!")
-message(paste("Output:", out_dir))
+# ============================================================================
+# PART 3: ALIGN LAND COVER TO BIOCLIMATIC GRID
+# ============================================================================
+
+message("Aligning land cover to bioclimatic grid...")
+
+# Load bioclimatic reference
+bio_reference <- terra::rast(bio_files_created[1])
+
+# Load temporary land cover files
+class_stack <- terra::rast(class_temp_files)
+
+# Resample to bioclimatic grid
+class_aligned <- terra::resample(class_stack, bio_reference, method = "near")
+
+# Save aligned files with final names
+for(i in 1:terra::nlyr(class_aligned)) {
+  layer_name <- names(class_aligned)[i]
+  out_file <- file.path(out_dir, paste0(layer_name, ".tif"))
+  
+  terra::writeRaster(class_aligned[[i]], 
+                     filename = out_file,
+                     overwrite = TRUE)
+  message(paste("✓", layer_name, "(aligned)"))
+}
+
+# Remove temporary files
+file.remove(class_temp_files)
+
+# ============================================================================
+# PART 4: FINAL VERIFICATION
+# ============================================================================
+
+message("\nVerifying final stack...")
+
+variables_files <- list.files(out_dir, pattern = "\\.tif$", full.names = TRUE)
+variables <- terra::rast(variables_files)
