@@ -18,7 +18,7 @@ bioclim_dir   <- "rasters/bioclimatic_raw/"
 out_dir <- "rasters/variables_buffer"
 
 # Shapefile with buffer (Update path to your buffer shapefile)
-buffer_shp_path <- "C:/Users/Admin/OneDrive/Projetos - Onça/Jaguar - Caatinga/caatinga_ibge_buffer_50km.shp"
+buffer_shp_path <- "shps/caatinga_ibge/caatinga_ibge_buffer_50km.shp"
 
 # Variables that passed VIF analysis
 bioclim_vars <- c("bio2", "bio3", "bio8", "bio12", "bio14", "bio18", "bio19")
