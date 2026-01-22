@@ -1,7 +1,7 @@
 # Clip selected environmental variables (post-VIF) for Caatinga with buffer
 # Author: Oliveira, 2025
 # Date: 01/22
-# Version: 2.0 - Buffer version with VIF-selected variables only
+# Version: 1.0 - Buffer version with VIF-selected variables only
 # Description: Clips only the variables that passed VIF analysis
 
 # 1. Load packages ----
