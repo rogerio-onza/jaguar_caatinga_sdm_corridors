@@ -32,7 +32,7 @@ megaSDM::BackgroundPoints(
   spplist = c("jaguar"),      # Species name for filename
   envdata = env_caatinga,     # Raster masked to Caatinga
   output = "data/background/", # Folder to save CSV
-  nbg = 105,                # Total number of points
+  nbg = 10000,                # Total number of points
   
   # THE KEY PARAMETER:
   # 0.6 means 60% of points come from the BUFFER.
@@ -45,7 +45,7 @@ megaSDM::BackgroundPoints(
 )
 
 output_folder <- "data/background/"
-nome_desejado <- "jaguar_bg_nnet_gbm_rf.csv"
+nome_desejado <- "jaguar_bg_maxe"
 
 # 2. Renomear o arquivo gerado para o nome que você quer
 arquivo_original <- file.path(output_folder, "jaguar_background.csv") # Nome padrão do pacote
